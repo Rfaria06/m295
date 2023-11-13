@@ -31,7 +31,7 @@ $requestView = '';
 // routing: home
 if(REQUESTURI === '' OR REQUESTURI === 'home')
 {
-    $requestView = ABSPATH.'/app/home/index.php';
+    $requestView = ABSPATH.'/app/home/index.raul.php';
 }
 
 // routing: other views

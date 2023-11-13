@@ -2,7 +2,7 @@
 
 namespace ext;
 
-class Sanitize {
+class sanitize {
 
     // Function to sanitize input strings
     public static function sanitizeString($input): string

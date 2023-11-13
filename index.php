@@ -1,92 +1,93 @@
 <?php
 
-// Import classes
-use app\o\Read;
-use ext\Database;
-use ext\Sanitize;
 
-// Enable error reporting
-ini_set('display_errors', 'On');
+
+
+// enable error reporting
 error_reporting(E_ALL & ~E_NOTICE);
 
-// Config
-const APPNAME = 'Kursverwaltung';
-define("ABSPATH", dirname(__FILE__));
-const ABSURL = 'https://modul295.pr24.dev';
+// config
+define('APPNAME', 'Kursverwaltung');
+define('ABSPATH', dirname(__FILE__));
+define('ABSURL', 'https://raul.undefiniert.ch');
 
-// Set content type
-header('Content-Type: application/json');
+// load classes
+require('ext/sanitize.php');
+require('ext/db.php');
 
-// Load classes
-require('ext/Sanitize.php');
-require_once('ext/Database.php');
+// get request uri
+$requestUrl = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
+$requestUrl = parse_url($requestUrl);
 
-// Get request URI
-$requestUrl = parse_url(filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL));
 $path = (isset($requestUrl['path']) ? trim($requestUrl['path'], '/') : '');
-$query = ($requestUrl['query'] ?? '');
+$query = (isset($requestUrl['query']) ? $requestUrl['query'] : '');
 
 define('REQUESTURI', $path);
 define('REQUESTQUERY', $query);
 
-// DB connection
-$db = new Database();
-$conn = $db->getConnection();
+// db connection
+$pdo = DB::getPdo();
 
-// Routing
+// routing
 $requestView = '';
 
-// Routing: home
-if (REQUESTURI === '' OR REQUESTURI === 'home') {
-    $requestView = ABSPATH . '/app/home/index.php';
-} else {
-    // Split path: get parameters and count
-    $split_requesturi = explode('/', REQUESTURI);
-
-    // Sanitize params
-    $route_folder = Sanitize::sanitizeRouteFolder($split_requesturi[0]);
-    $route_id = Sanitize::sanitizeRouteId($split_requesturi);
-
-    // 1 parameter in the query string: index, create
-    if (count($split_requesturi) === 1) {
-        define('REQUESTID', 'all');
-
-        switch ($_SERVER['REQUEST_METHOD']) {
-            case 'GET':
-                $requestView = ABSPATH . '/app/' . $route_folder . '/read.php';
-                echo json_encode(['status' => 200, 'data' => Read::getFullTable($route_folder, $conn)]);
-                break;
-            case 'POST':
-                $requestView = ABSPATH . '/app/' . $route_folder . '/create.php';
-                echo json_encode(['status' => 200, 'data' => $requestView]);
-                break;
-        }
-    }
-
-    // 2 parameters in the query string: read, update, delete
-    else if (count($split_requesturi) === 2) {
-        define('REQUESTID', $route_id);
-
-        switch ($_SERVER['REQUEST_METHOD']) {
-            case 'GET':
-                $requestView = ABSPATH . '/app/' . $route_folder . '/read.php';
-                echo json_encode(['status' => 200, 'data' =>$requestView]);
-                break;
-            case 'PUT':
-                $requestView = ABSPATH . '/app/' . $route_folder . '/update.php';
-                echo json_encode(['status' => 200, 'data' => $requestView]);
-                break;
-            case 'DELETE':
-                $requestView = ABSPATH . '/app/' . $route_folder . '/delete.php';
-                echo json_encode(['status' => 200, 'data' => $requestView]);
-                break;
-        }
-    }
+// routing: home
+if(REQUESTURI === '' OR REQUESTURI === 'home')
+{
+    	$requestView = ABSPATH.'/app/home/index.php';
 }
 
-// Routing: view or error
-if (file_exists($requestView)) {
-    require_once($requestView);
-} else {
-    require_once(ABSPATH . '/app/error/not_found.php');
+// routing: other views
+else
+{
+    	// split path : get parameters and count
+	$split_requesturi = explode('/', REQUESTURI);
+	//echo '<pre>'.print_r($split_requesturi, true).'</pre>';
+	
+	// sanitize params
+	$route_folder = (isset($split_requesturi[0]) && !preg_match('/[^A-Za-z0-9_]/', $split_requesturi[0]) ? $split_requesturi[0] : '');
+	$route_id = (isset($split_requesturi[1]) && !preg_match('/[^0-9]/', $split_requesturi[1]) ? $split_requesturi[1] : '');
+	
+	// 1 parameters in the query string : index, create
+	if(count($split_requesturi) === 1)
+	{
+    		if($_SERVER['REQUEST_METHOD'] === 'GET')
+		{
+        define('REQUESTID', 'all');
+        			$requestView = ABSPATH.'/app/'.$route_folder.'/read.php';
+		}
+		else if($_SERVER['REQUEST_METHOD'] === 'POST')
+        		{
+        			$requestView = ABSPATH.'/app/'.$route_folder.'/create.php';
+		}
+	}
+	
+	// 2 parameters in the query string : read, update, delete
+	else if(count($split_requesturi) === 2)
+    	{
+    		define('REQUESTID', $route_id);
+    		
+		if($_SERVER['REQUEST_METHOD'] === 'GET')
+		{
+        			$requestView = ABSPATH.'/app/'.$route_folder.'/read.php';
+		}
+		else if($_SERVER['REQUEST_METHOD'] === 'PUT')
+        		{
+        			$requestView = ABSPATH.'/app/'.$route_folder.'/update.php';
+		}
+		else if($_SERVER['REQUEST_METHOD'] === 'DELETE')
+        		{
+        			$requestView = ABSPATH.'/app/'.$route_folder.'/delete.php';
+		}
+	}
+}
+
+// routing: view or error
+if(file_exists($requestView))
+{
+    	require_once($requestView);
+}
+else
+{
+    	require_once(ABSPATH.'/app/error/not_found.php');
 }
