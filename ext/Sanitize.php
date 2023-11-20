@@ -2,7 +2,7 @@
 
 namespace ext;
 
-class sanitize {
+class Sanitize {
 
     // Function to sanitize input strings
     public static function sanitizeString($input): string
@@ -32,12 +32,12 @@ class sanitize {
     // Function to sanitize route folder
     public static function sanitizeRouteFolder($input): string
     {
-        return (isset($input[0]) && !preg_match('/[^A-Za-z0-9_]/', $input[0]) ? $input[0] : '');
+        return (isset($input) && !preg_match('/[^A-Za-z0-9_]/', $input) ? $input : '');
     }
 
     // Function to sanitize route id
     public static function sanitizeRouteId($input): string
     {
-        return (isset($input[1]) && !preg_match('/[^0-9]/', $input[1]) ? $input[1] : '');
+        return (isset($input) && !preg_match('/[^0-9]/', $input) ? $input : '');
     }
 }

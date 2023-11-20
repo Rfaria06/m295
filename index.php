@@ -1,32 +1,26 @@
 <?php
 
-
-
+use ext\Sanitize;
 
 // enable error reporting
 error_reporting(E_ALL & ~E_NOTICE);
 
 // config
-define('APPNAME', 'Kursverwaltung');
 define('ABSPATH', dirname(__FILE__));
-define('ABSURL', 'https://raul.undefiniert.ch');
 
 // load classes
-require('ext/sanitize.php');
-require('ext/db.php');
+require('ext/Sanitize.php');
 
 // get request uri
 $requestUrl = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
 $requestUrl = parse_url($requestUrl);
 
 $path = (isset($requestUrl['path']) ? trim($requestUrl['path'], '/') : '');
-$query = (isset($requestUrl['query']) ? $requestUrl['query'] : '');
+$query = ($requestUrl['query'] ?? '');
 
 define('REQUESTURI', $path);
 define('REQUESTQUERY', $query);
 
-// db connection
-$pdo = DB::getPdo();
 
 // routing
 $requestView = '';
@@ -42,13 +36,12 @@ else
 {
     	// split path : get parameters and count
 	$split_requesturi = explode('/', REQUESTURI);
-	//echo '<pre>'.print_r($split_requesturi, true).'</pre>';
-	
+
 	// sanitize params
-	$route_folder = (isset($split_requesturi[0]) && !preg_match('/[^A-Za-z0-9_]/', $split_requesturi[0]) ? $split_requesturi[0] : '');
-	$route_id = (isset($split_requesturi[1]) && !preg_match('/[^0-9]/', $split_requesturi[1]) ? $split_requesturi[1] : '');
-	
-	// 1 parameters in the query string : index, create
+	$route_folder = Sanitize::sanitizeRouteFolder($split_requesturi[0]);
+	$route_id = Sanitize::sanitizeRouteId($split_requesturi[1]);
+
+	// 1 parameter in the query string : index, create
 	if(count($split_requesturi) === 1)
 	{
     		if($_SERVER['REQUEST_METHOD'] === 'GET')

@@ -4,12 +4,12 @@ namespace ext;
 
 use mysqli;
 
-class db_plesk
+class DB
 {
-    private string $DB_HOST = 'plesk02.axanet.ch';
-    private string $DB_USER = 'raul_m295';
-    private string $DB_PASSWORD = '2!h2txX16';
-    private string $DB_NAME = 'raul_m295';
+    private string $DB_HOST = 'schule.winnert1.dbs.hostpoint.internal';
+    private string $DB_USER = 'winnert1_schule';
+    private string $DB_PASSWORD = 'FEA9PNz3p+tu+8!?MPrP';
+    private string $DB_NAME = 'winnert1_m295raul';
     private mysqli $conn;
 
     public function __construct() {
@@ -22,7 +22,7 @@ class db_plesk
         }
     }
 
-    public function getConnection(): mysqli
+    public function getConn(): mysqli
     {
         return $this->conn;
     }
