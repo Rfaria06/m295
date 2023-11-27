@@ -4,40 +4,34 @@ namespace ext;
 
 class Sanitize {
 
-    // Function to sanitize input strings
-    public static function sanitizeString($input): string
+    /**
+     * Sanitize a string for use in a route folder and protect against SQL injections.
+     *
+     * @param string|null $input The input string to be sanitized.
+     * @return string The sanitized string.
+     */
+    public static function sanitizeString(?string $input): string
     {
-        // Remove leading and trailing whitespaces
-        $sanitized = trim($input);
-        // Remove HTML and PHP tags
-        $sanitized = strip_tags($sanitized);
-        // Convert special characters to HTML entities
-        return htmlentities($sanitized, ENT_QUOTES, 'UTF-8');
+        // Use a regular expression to check if the string contains only alphanumeric characters and underscores.
+        return (isset($input) && preg_match('/^[a-zA-Z0-9_]+$/', $input) ? $input : 'injection');
     }
 
-    // Function to sanitize integers
-    public static function sanitizeInt($input): array|string|null
+    public static function sanitizeDate(?string $input): string
     {
-        // Remove non-numeric characters
-        return preg_replace("/[^0-9]/", "", $input);
-    }
+        // If $input is null or empty, return an empty string
+        if (!$input) {
+            return '';
+        }
 
-    // Function to sanitize email addresses
-    public static function sanitizeEmail($input): string
-    {
-        // Remove invalid characters from email
-        return filter_var($input, FILTER_SANITIZE_EMAIL);
-    }
+        // Try parsing the input as a date
+        $date = DateTime::createFromFormat('Y-m-d', $input);
 
-    // Function to sanitize route folder
-    public static function sanitizeRouteFolder($input): string
-    {
-        return (isset($input) && !preg_match('/[^A-Za-z0-9_]/', $input) ? $input : '');
-    }
+        // Check if the input is a valid date
+        if ($date && $date->format('Y-m-d') === $input) {
+            // Valid date, return the sanitized date
+            return $input;
+        }
 
-    // Function to sanitize route id
-    public static function sanitizeRouteId($input): string
-    {
-        return (isset($input) && !preg_match('/[^0-9]/', $input) ? $input : '');
+        return '0000-00-00';
     }
 }

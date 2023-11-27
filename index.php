@@ -39,9 +39,15 @@ else {
     $split_requesturi = explode('/', REQUESTURI);
 
     // Sanitize params
-    $table = isset($split_requesturi[0]) ? Sanitize::sanitizeRouteFolder($split_requesturi[0]) : null;
-    $column = isset($split_requesturi[1]) ? Sanitize::sanitizeRouteFolder($split_requesturi[1]) : null;
-    $id = isset($split_requesturi[2]) ? Sanitize::sanitizeRouteFolder($split_requesturi[2]) : null;
+    $table = isset($split_requesturi[0]) ? Sanitize::sanitizeString($split_requesturi[0]) : null;
+    $column = isset($split_requesturi[1]) ? Sanitize::sanitizeString($split_requesturi[1]) : null;
+    $id = isset($split_requesturi[2]) ? Sanitize::sanitizeString($split_requesturi[2]) : null;
+
+    if ($table === 'injection' || $column === 'injection' || $id === 'injection') {
+        header('Content-Type: application/json');
+        http_response_code(400);
+        die(json_encode(['error' => 'Possible injection detected']));
+    }
 
     if ($table) {
         define('TABLE', $table);

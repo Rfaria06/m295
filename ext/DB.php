@@ -140,6 +140,15 @@ private function updateData() {
             if (empty($requestData)) {
                 throw new \Exception('No data provided for update');
             }
+
+            if (isset($requestData['startdatum'])) {
+                $requestData['startdatum'] = Sanitize::sanitizeDate($requestData['startdatum']);
+            }
+
+            if (isset($requestData['enddatum'])) {
+                $requestData['enddatum'] = Sanitize::sanitizeDate($requestData['enddatum']);
+            }
+
     
             // Construct the SET part of the SQL query
             $setValues = [];
@@ -184,6 +193,14 @@ private function updateData() {
             // Ensure the required data is present
             if (empty($requestData)) {
                 throw new \Exception('No data provided for insert');
+            }
+
+            if (isset($requestData['startdatum'])) {
+                $requestData['startdatum'] = Sanitize::sanitizeDate($requestData['startdatum']);
+            }
+
+            if (isset($requestData['enddatum'])) {
+                $requestData['enddatum'] = Sanitize::sanitizeDate($requestData['enddatum']);
             }
     
             // Escape column names and values
