@@ -30,7 +30,7 @@ $requestView = '';
 
 // Routing: home
 if (REQUESTURI === '' OR REQUESTURI === 'home') {
-    $requestView = ABSPATH . '/app/home/index.php';
+    require_once(ABSPATH . '/app/home/index.php');
 }
 
 // Routing: other views
@@ -43,14 +43,21 @@ else {
     $column = isset($split_requesturi[1]) ? Sanitize::sanitizeRouteFolder($split_requesturi[1]) : null;
     $id = isset($split_requesturi[2]) ? Sanitize::sanitizeRouteFolder($split_requesturi[2]) : null;
 
-    define('TABLE', $table);
-    define('COLUMN', $column);
-    define('ID', $id);
-}
+    if ($table) {
+        define('TABLE', $table);
+        define('COLUMN', $column);
+        define('ID', $id);
 
-// Routing: view or error
-if (in_array(TABLE, $tables)) {
-    $db = new DB(TABLE, COLUMN, ID);
-} else {
-    require_once(ABSPATH . '/app/error/not_found.php');
+        // Routing: view or error
+        if (in_array(TABLE, $tables)) {
+            $db = new DB(TABLE, COLUMN, ID);
+        } else {
+            require_once(ABSPATH . '/app/error/not_found.php');
+        }
+
+    } else {
+        header('Content-Type: application/json');
+        http_response_code(400);
+        die(json_encode(['error' => 'No Table specified']));
+    }
 }
