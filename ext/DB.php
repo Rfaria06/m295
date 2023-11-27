@@ -1,7 +1,8 @@
-<?php
+<?php /** @noinspection SqlNoDataSourceInspection */
 
 namespace ext;
 
+use Exception;
 use mysqli;
 
 class DB
@@ -22,11 +23,11 @@ class DB
             $this->conn = new mysqli($this->DB_HOST, $this->DB_USER, $this->DB_PASSWORD, $this->DB_NAME);
 
             if ($this->conn->connect_error) {
-                throw new \Exception("Connection failed: " . $this->conn->connect_error);
+                throw new Exception("Connection failed: " . $this->conn->connect_error);
             }
 
             if (!$this->conn->set_charset('utf8')) {
-                throw new \Exception("Error setting charset: " . $this->conn->error);
+                throw new Exception("Error setting charset: " . $this->conn->error);
             }
 
             $this->table = $table ?? '';
@@ -34,7 +35,7 @@ class DB
             $this->id = $id ?? '';
 
             $this->start();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->handleError($e->getMessage());
         }
     }
@@ -62,12 +63,12 @@ class DB
                 default:
                     http_response_code(400);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->handleError($e->getMessage());
         }
     }
 
-    private function getData() {
+    private function getData(): void {
         try {
             if ($this->id && $this->column) {
                 $query = 'SELECT * FROM tbl_' . $this->table . ' WHERE ' . $this->column . ' = ' . $this->id . ';';
@@ -78,7 +79,7 @@ class DB
             $result = $this->conn->query($query);
 
             if ($result === false) {
-                throw new \Exception('Error in query: ' . $this->conn->error);
+                throw new Exception('Error in query: ' . $this->conn->error);
             }
 
             $data = [];
@@ -92,14 +93,14 @@ class DB
                 http_response_code(200);
                 echo json_encode(['data' => $data]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->handleError($e->getMessage());
         }
     }
 
 
 
-    private function deleteData() {
+    private function deleteData(): void {
         try {
             if (empty($this->id) && empty($this->column)) {
                 $query = 'DELETE FROM tbl_' . $this->table . ';';
@@ -116,39 +117,32 @@ class DB
             $result = $this->conn->query($query);
 
             if ($result === false) {
-                throw new \Exception('Error deleting record: ' . $this->conn->error);
+                throw new Exception('Error deleting record: ' . $this->conn->error);
             }
 
             echo json_encode(['message' => 'Record deleted successfully']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->handleError($e->getMessage());
         }
     }
 
     
-private function updateData() {
+private function updateData(): void {
         try {
             // Get the request body
             $requestData = json_decode(file_get_contents('php://input'), true);
     
             // Check if request body is valid JSON
             if ($requestData === null && json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Invalid JSON data in request body');
+                throw new Exception('Invalid JSON data in request body');
             }
     
             // Ensure the required data is present
             if (empty($requestData)) {
-                throw new \Exception('No data provided for update');
+                throw new Exception('No data provided for update');
             }
 
-            if (isset($requestData['startdatum'])) {
-                $requestData['startdatum'] = Sanitize::sanitizeDate($requestData['startdatum']);
-            }
-
-            if (isset($requestData['enddatum'])) {
-                $requestData['enddatum'] = Sanitize::sanitizeDate($requestData['enddatum']);
-            }
-
+            $requestData = Sanitize::sanitizeRequest($requestData);
     
             // Construct the SET part of the SQL query
             $setValues = [];
@@ -169,39 +163,34 @@ private function updateData() {
     
             // Check if the query was successful
             if ($result === false) {
-                throw new \Exception('Error updating record: ' . $this->conn->error);
+                throw new Exception('Error updating record: ' . $this->conn->error);
             }
     
             // Return a success message
             echo json_encode(['message' => 'Record updated successfully']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->handleError($e->getMessage());
         }
     }
 
 
-    private function insertData() {
+    private function insertData(): void {
         try {
             // Get the request body
             $requestData = json_decode(file_get_contents('php://input'), true);
     
+            
             // Check if request body is valid JSON
             if ($requestData === null && json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Invalid JSON data in request body');
+                throw new Exception('Invalid JSON data in request body');
             }
     
             // Ensure the required data is present
             if (empty($requestData)) {
-                throw new \Exception('No data provided for insert');
+                throw new Exception('No data provided for insert');
             }
 
-            if (isset($requestData['startdatum'])) {
-                $requestData['startdatum'] = Sanitize::sanitizeDate($requestData['startdatum']);
-            }
-
-            if (isset($requestData['enddatum'])) {
-                $requestData['enddatum'] = Sanitize::sanitizeDate($requestData['enddatum']);
-            }
+            $requestData = Sanitize::sanitizeRequest($requestData);
     
             // Escape column names and values
             $columns = array_map([$this->conn, 'real_escape_string'], array_keys($requestData));
@@ -218,23 +207,18 @@ private function updateData() {
     
             // Check if the query was successful
             if ($result === false) {
-                throw new \Exception('Error inserting record: ' . $this->conn->error);
+                throw new Exception('Error inserting record: ' . $this->conn->error);
             }
     
             // Return a success message
             echo json_encode(['message' => 'Record inserted successfully']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->handleError($e->getMessage());
         }
     }
 
-
-    private function handleError($message) {
+    private function handleError($message): void {
         http_response_code(500);
         echo json_encode(['error' => $message]);
-    }
-
-    public function getConn(): mysqli {
-        return $this->conn;
     }
 }
