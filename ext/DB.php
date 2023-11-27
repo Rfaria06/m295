@@ -67,51 +67,64 @@ class DB
         }
     }
 
-private function getData() {
+    private function getData() {
         try {
             if ($this->id && $this->column) {
                 $query = 'SELECT * FROM tbl_' . $this->table . ' WHERE ' . $this->column . ' = ' . $this->id . ';';
             } else {
                 $query = 'SELECT * FROM tbl_' . $this->table . ';';
             }
-    
+
             $result = $this->conn->query($query);
-    
+
             if ($result === false) {
                 throw new \Exception('Error in query: ' . $this->conn->error);
             }
-    
+
             $data = [];
             while ($row = $result->fetch_assoc()) {
                 $data[] = $row;
             }
-    
-            http_response_code(200);
-            echo json_encode(['data' => $data]);
-        } catch (\Exception $e) {
-            $this->handleError($e->getMessage());
-        }
-    }
 
-
-    private function deleteData() {
-        try {
-            if (!empty($this->id) && !empty($this->column)) {
-                $query = 'DELETE FROM tbl_' . $this->table . ' WHERE ' . $this->column . ' = ' . $this->id . ';';
-                $result = $this->conn->query($query);
-
-                if ($result === false) {
-                    throw new \Exception('Error deleting record: ' . $this->conn->error);
-                }
-
-                echo json_encode(['message' => 'Record deleted successfully']);
+            if (empty($data)) {
+                http_response_code(204);
             } else {
-                throw new \Exception('Invalid parameters for delete operation');
+                http_response_code(200);
+                echo json_encode(['data' => $data]);
             }
         } catch (\Exception $e) {
             $this->handleError($e->getMessage());
         }
     }
+
+
+
+    private function deleteData() {
+        try {
+            if (empty($this->id) && empty($this->column)) {
+                $query = 'DELETE FROM tbl_' . $this->table . ';';
+            } else {
+                $query = 'DELETE FROM tbl_' . $this->table;
+
+                if (!empty($this->column)) {
+                    $query .= ' WHERE ' . $this->column . ' = ' . $this->id;
+                }
+
+                $query .= ';';
+            }
+
+            $result = $this->conn->query($query);
+
+            if ($result === false) {
+                throw new \Exception('Error deleting record: ' . $this->conn->error);
+            }
+
+            echo json_encode(['message' => 'Record deleted successfully']);
+        } catch (\Exception $e) {
+            $this->handleError($e->getMessage());
+        }
+    }
+
     
 private function updateData() {
         try {
