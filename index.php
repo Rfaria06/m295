@@ -23,7 +23,6 @@ $path = (isset($requestUrl['path']) ? trim($requestUrl['path'], '/') : '');
 $query = ($requestUrl['query'] ?? '');
 
 define('REQUESTURI', $path);
-define('REQUESTQUERY', $query);
 
 // Routing
 $requestView = '';
