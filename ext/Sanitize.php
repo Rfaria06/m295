@@ -1,17 +1,36 @@
 <?php
-
 namespace ext;
 
 use DateTime;
 
+/**
+ * Sanitizer class
+ * @noinspection PhpUnused
+ */
 class Sanitize {
 
+    /**
+     * @param string $input the string to be sanitized
+     * @return string the sanitized string
+     * If an injection is detected, the application stops and returns an error message
+     */
     public static function sanitizeString(string $input): string
     {
-        return (preg_match('/^[a-zA-Z0-9_]+$/', $input) ? $input : 'injection');
+        $sanitized = (preg_match('/^[a-zA-Z0-9_]+$/', $input) ? $input : 'injection');
+        if ($sanitized === 'injection') {
+            header('Content-Type: application/json');
+            http_response_code(400);
+            die(json_encode(['error' => 'Possible injection detected']));
+        }
+        return $sanitized;
     }
 
-    public static function sanitizeDate(string $input): string
+    /**
+     * @param string $input the date to be sanitized
+     * @return string the sanitized date
+     * Tries to parse the $input as date, if that does not work, the standard date of 0000-00-00 is returned
+     */
+    private static function sanitizeDate(string $input): string
     {
         $date = DateTime::createFromFormat('Y-m-d', $input);
 
@@ -22,7 +41,12 @@ class Sanitize {
         return '0000-00-00';
     }
 
-    public static function sanitizeEmail(string $email): string
+    /**
+     * @param string $email the email to be sanitized
+     * @return string the sanitized email
+     * trims and filters the $input as email. If that fais, return empty string
+     */
+    private static function sanitizeEmail(string $email): string
     {
         if (!$email) {
             return '';
@@ -37,22 +61,40 @@ class Sanitize {
         return $email;
     }
 
-    public static function sanitizePhone(string $phone): string
+    /**
+     * @param string $phone the phone number to be sanitized
+     * @return string the sanitized phone number or an empty string
+     */
+    private static function sanitizePhone(string $phone): string
     {
         $phone = str_replace(' ', '', $phone);
         return (preg_match('/^[0-9]+$/', $phone) ? $phone : '');
     }
 
-    public static function sanitizeNumber(string $number): string
+    /**
+     * @param string $number number to be sanitized
+     * @return string sanitized number
+     * Difference to sanitizePhone -> sanitizePhone deletes spaces, this one leaves the spaces
+     */
+    private static function sanitizeNumber(string $number): string
     {
         return (preg_match('/^[0-9]+$/', $number) ? $number : '');
     }
 
-    public static function sanitizeDecimal(string $number): string
+    /**
+     * @param string $number the decimal to be sanitized
+     * @return string the sanitized decimal
+     */
+    private static function sanitizeDecimal(string $number): string
     {
         return filter_var($number, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     }
 
+    /**
+     * @param array $requestData the HTTP Request
+     * @return array the sanitized HTTP Request
+     * This function utilises this classes functions to sanitize the entire HTTP Request array
+     */
     public static function sanitizeRequest(array $requestData): array
     {
         $fields = [

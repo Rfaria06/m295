@@ -3,9 +3,20 @@
 use ext\DB;
 use ext\Sanitize;
 
+/**
+ * @author Raul Faria
+ * @version 1.0
+ * M295 - PHP Backend
+ *
+ * Setting up configurations and constants
+ * Routing
+ */
 // Enable error reporting
+//      Commented out in production
+/*
 ini_set('display_errors', 'On');
 error_reporting(E_ALL & ~E_NOTICE);
+*/
 
 // Config
 define('ABSPATH', dirname(__FILE__));
@@ -41,12 +52,6 @@ else {
     $table = isset($split_requesturi[0]) ? Sanitize::sanitizeString($split_requesturi[0]) : null;
     $column = isset($split_requesturi[1]) ? Sanitize::sanitizeString($split_requesturi[1]) : null;
     $id = isset($split_requesturi[2]) ? Sanitize::sanitizeString($split_requesturi[2]) : null;
-
-    if ($table === 'injection' || $column === 'injection' || $id === 'injection') {
-        header('Content-Type: application/json');
-        http_response_code(400);
-        die(json_encode(['error' => 'Possible injection detected']));
-    }
 
     if ($table) {
         define('TABLE', $table);

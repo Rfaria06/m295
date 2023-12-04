@@ -5,6 +5,10 @@ namespace ext;
 use Exception;
 use mysqli;
 
+/**
+ * Interface between the application and the database
+ * Performs all database operations
+ */
 class DB
 {
     private string $DB_HOST = 'schule.winnert1.dbs.hostpoint.internal';
@@ -16,7 +20,13 @@ class DB
     private string $column;
     private string $id;
 
-    public function __construct($table, $column, $id) {
+    /**
+     * @param $table string requested table
+     * @param $column string requested column
+     * @param $id string requested id (does not need to be a number -> for custom select criteria)
+     * Creates a new database connection and starts fetching the requested data
+     */
+    public function __construct(string $table, string $column, string $id) {
         header('Content-Type: application/json');
 
         try {
@@ -30,9 +40,9 @@ class DB
                 throw new Exception("Error setting charset: " . $this->conn->error);
             }
 
-            $this->table = $table ?? '';
-            $this->column = $column ?? '';
-            $this->id = $id ?? '';
+            $this->table = $table;
+            $this->column = $column;
+            $this->id = $id;
 
             $this->start();
         } catch (Exception $e) {
@@ -40,6 +50,9 @@ class DB
         }
     }
 
+    /**
+     * Performs switching between request types for later actions
+     */
     private function start(): void {
         try {
             switch ($_SERVER['REQUEST_METHOD']) {
@@ -47,6 +60,7 @@ class DB
                     $this->insertData();
                     break;
 
+                    // PUT and PATCH are interchangeable
                 case 'PUT':
                 case 'PATCH':
                     $this->updateData();
@@ -68,6 +82,10 @@ class DB
         }
     }
 
+    /**
+     * @return void
+     * Selects data for a GET request and sends it to the client
+     */
     private function getData(): void {
         try {
             if ($this->id && $this->column) {
@@ -98,8 +116,10 @@ class DB
         }
     }
 
-
-
+    /**
+     * @return void
+     * Selects data for a DELETE request and sends it to the client
+     */
     private function deleteData(): void {
         try {
             if (empty($this->id) && empty($this->column)) {
@@ -126,8 +146,11 @@ class DB
         }
     }
 
-    
-private function updateData(): void {
+    /**
+     * @return void
+     * Selects data for a PUT || UPDATE request and sends it to the client
+     */
+    private function updateData(): void {
         try {
             // Get the request body
             $requestData = json_decode(file_get_contents('php://input'), true);
@@ -173,7 +196,10 @@ private function updateData(): void {
         }
     }
 
-
+    /**
+     * @return void
+     * Selects data for a POST request and sends it to the client
+     */
     private function insertData(): void {
         try {
             // Get the request body
@@ -217,7 +243,12 @@ private function updateData(): void {
         }
     }
 
-    private function handleError($message): void {
+    /**
+     * @param $message string message
+     * @return void
+     * Error handler
+     */
+    private function handleError(string $message): void {
         http_response_code(500);
         echo json_encode(['error' => $message]);
     }
