@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  title: m295
+  version: 1.0.0
+servers:
+  - url: https://raul.undefiniert.ch
+paths:
+  /kurse/:
+    post:
+      tags:
+        - General
+      summary: POST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                kursnummer: 421
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - General
+      summary: GET - All
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - General
+      summary: PUT - All
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                kursnummer: '888'
+                kursthema: PUT Request
+                inhalt: ':)'
+                nr_dozent: '928'
+                startdatum: 19.05.2024
+                enddatum: 19.05.2025
+                dauer: '16'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - General
+      summary: DELETE - All
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kurse/id_kurs/27:
+    get:
+      tags:
+        - General
+      summary: GET - By ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - General
+      summary: PATCH - By ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                kursnummer: 652
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - General
+      summary: PUT - By ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                kursnummer: '888'
+                kursthema: PUT Request
+                inhalt: ':)'
+                nr_dozent: '928'
+                startdatum: 19.05.2024
+                enddatum: 19.05.2025
+                dauer: '16'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kurse/kursnummer/999:
+    get:
+      tags:
+        - General
+      summary: GET - By custom condition
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - General
+      summary: PATCH - By custom condition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                kursnummer: 777
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kurse/27:
+    patch:
+      tags:
+        - General
+      summary: PATCH - All
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                kursnummer: 541
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kurse/kursnummer/652:
+    put:
+      tags:
+        - General
+      summary: PUT - By custom condition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                kursnummer: '888'
+                kursthema: PUT Request
+                inhalt: ':)'
+                nr_dozent: '928'
+                startdatum: 19.05.2024
+                enddatum: 19.05.2025
+                dauer: '16'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - General
+      summary: DELETE - By custom condition
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kurse/id_kurs/28:
+    delete:
+      tags:
+        - General
+      summary: DELETE - By ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
