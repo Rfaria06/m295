@@ -22,11 +22,14 @@ class DB
 
     /**
      * @param $table string requested table
-     * @param $column string requested column
-     * @param $id string requested id (does not need to be a number -> for custom select criteria)
+     * @param $column string | null requested column
+     * @param $id string | null requested id (does not need to be a number -> for custom select criteria)
      * Creates a new database connection and starts fetching the requested data
      */
-    public function __construct(string $table, string $column, string $id) {
+    public function __construct(string $table, string | null $column, string | null $id) {
+        $column = $column ?? '';
+        $id = $id ?? '';
+
         header('Content-Type: application/json');
 
         try {
