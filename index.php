@@ -5,7 +5,7 @@ use ext\Sanitize;
 
 /**
  * @author Raul Faria
- * @version 1.0
+ * @version 1.0.0
  * M295 - PHP Backend
  *
  * Setting up configurations and constants
@@ -14,8 +14,8 @@ use ext\Sanitize;
 // Enable error reporting
 //      Commented out in production
 
-ini_set('display_errors', 'On');
-error_reporting(E_ALL & ~E_NOTICE);
+//ini_set('display_errors', 'On');
+//error_reporting(E_ALL & ~E_NOTICE);
 
 // Config
 define('ABSPATH', dirname(__FILE__));
