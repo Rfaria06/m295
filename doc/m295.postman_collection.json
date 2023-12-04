@@ -1,0 +1,354 @@
+{
+	"info": {
+		"_postman_id": "9aba2481-ab85-4e97-ba19-1d7c5328da32",
+		"name": "m295",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31124845"
+	},
+	"item": [
+		{
+			"name": "POST",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kursnummer\": 421\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/id_kurs/27",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"id_kurs",
+						"27"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - By custom condition",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/kursnummer/999",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"kursnummer",
+						"999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH - All",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kursnummer\": 541\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/27",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"27"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH - By ID",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kursnummer\": 652\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/id_kurs/27",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"id_kurs",
+						"27"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH - By custom condition",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kursnummer\": 777\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/kursnummer/999",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"kursnummer",
+						"999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - All",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kursnummer\": \"888\",\r\n    \"kursthema\": \"PUT Request\",\r\n    \"inhalt\": \":)\",\r\n    \"nr_dozent\": \"928\",\r\n    \"startdatum\": \"19.05.2024\",\r\n    \"enddatum\": \"19.05.2025\",\r\n    \"dauer\": \"16\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - By ID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kursnummer\": \"888\",\r\n    \"kursthema\": \"PUT Request\",\r\n    \"inhalt\": \":)\",\r\n    \"nr_dozent\": \"928\",\r\n    \"startdatum\": \"19.05.2024\",\r\n    \"enddatum\": \"19.05.2025\",\r\n    \"dauer\": \"16\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/id_kurs/27",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"id_kurs",
+						"27"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - By custom condition",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kursnummer\": \"888\",\r\n    \"kursthema\": \"PUT Request\",\r\n    \"inhalt\": \":)\",\r\n    \"nr_dozent\": \"928\",\r\n    \"startdatum\": \"19.05.2024\",\r\n    \"enddatum\": \"19.05.2025\",\r\n    \"dauer\": \"16\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/kursnummer/652",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"kursnummer",
+						"652"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE - All",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE - By ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/id_kurs/28",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"id_kurs",
+						"28"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE - By custom condition",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://raul.undefiniert.ch/kurse/kursnummer/652",
+					"protocol": "https",
+					"host": [
+						"raul",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"kursnummer",
+						"652"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
