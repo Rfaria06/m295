@@ -1,9 +1,11 @@
-# Alle Anfragen auf die Datei index.raul.php umleiten
 <IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
+    RewriteEngine On
+    RewriteBase /
+
+    # Allow access to /doc/m295.yaml
+    RewriteRule ^doc/m295\.yaml$ - [L]
+
+    # Redirect all other requests to index.php
+    RewriteRule ^ index.php [L]
 </IfModule>
+
