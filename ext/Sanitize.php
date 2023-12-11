@@ -16,13 +16,12 @@ class Sanitize {
      */
     public static function sanitizeString(string $input): string
     {
-        $sanitized = (preg_match('/^[a-zA-Z0-9_]+$/', $input) ? $input : 'injection');
-        if ($sanitized === 'injection') {
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $input)) {
             header('Content-Type: application/json');
             http_response_code(400);
             die(json_encode(['error' => 'Possible injection detected']));
         }
-        return $sanitized;
+        return $input;
     }
 
     /**
