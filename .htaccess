@@ -1,11 +1,20 @@
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
+    
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [R=200,L]
 
     # Allow access to /doc/m295.yaml
     RewriteRule ^doc/m295\.yaml$ - [L]
+    RewriteRule ^doc/m295_Dokumentation\.pdf$ - [L]
 
     # Redirect all other requests to index.php
     RewriteRule ^ index.php [L]
 </IfModule>
-

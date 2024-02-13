@@ -5,7 +5,7 @@ info:
 servers:
   - url: https://raul.undefiniert.ch
 paths:
-  /kurse/:
+  /lernende:
     post:
       tags:
         - General
@@ -16,7 +16,7 @@ paths:
             schema:
               type: object
               example:
-                kursnummer: 421
+                vorname: raul
       responses:
         '200':
           description: Successful response
@@ -31,80 +31,11 @@ paths:
           description: Successful response
           content:
             application/json: {}
-    put:
-      tags:
-        - General
-      summary: PUT - All
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                kursnummer: '888'
-                kursthema: PUT Request
-                inhalt: ':)'
-                nr_dozent: '928'
-                startdatum: 19.05.2024
-                enddatum: 19.05.2025
-                dauer: '16'
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-    delete:
-      tags:
-        - General
-      summary: DELETE - All
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /kurse/id_kurs/27:
+  /kurse/id/33:
     get:
       tags:
         - General
       summary: GET - By ID
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-    patch:
-      tags:
-        - General
-      summary: PATCH - By ID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                kursnummer: 652
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-    put:
-      tags:
-        - General
-      summary: PUT - By ID
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                kursnummer: '888'
-                kursthema: PUT Request
-                inhalt: ':)'
-                nr_dozent: '928'
-                startdatum: 19.05.2024
-                enddatum: 19.05.2025
-                dauer: '16'
       responses:
         '200':
           description: Successful response
@@ -136,7 +67,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /kurse/27:
+  /kurse/id/27:
     patch:
       tags:
         - General
@@ -148,6 +79,77 @@ paths:
               type: object
               example:
                 kursnummer: 541
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - General
+      summary: PUT - By ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                kursnummer: '888'
+                kursthema: PUT Request
+                inhalt: ':)'
+                nr_dozent: '928'
+                startdatum: 19.05.2024
+                enddatum: 19.05.2025
+                dauer: '16'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kurse/id/32:
+    patch:
+      tags:
+        - General
+      summary: PATCH - By ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                startdatum: 2006.05.19
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /kurse/:
+    put:
+      tags:
+        - General
+      summary: PUT - All
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                kursnummer: '888'
+                kursthema: PUT Request
+                inhalt: ':)'
+                nr_dozent: '928'
+                startdatum: 19.05.2024
+                enddatum: 19.05.2025
+                dauer: '16'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - General
+      summary: DELETE - All
       responses:
         '200':
           description: Successful response
@@ -185,7 +187,7 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /kurse/id_kurs/28:
+  /kurse/id/28:
     delete:
       tags:
         - General

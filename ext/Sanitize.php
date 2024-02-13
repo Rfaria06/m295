@@ -16,7 +16,7 @@ class Sanitize {
      */
     public static function sanitizeString(string $input): string
     {
-        if (!preg_match('/^[a-zA-Z0-9_]+$/', $input)) {
+        if (!preg_match('/^[a-zA-Z0-9_\s\/]*$/', $input)) {
             header('Content-Type: application/json');
             http_response_code(400);
             die(json_encode(['error' => 'Possible injection detected']));
